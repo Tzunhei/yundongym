@@ -9,7 +9,7 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
-  "plugins": ["prettier", "graphql"],
+  "plugins": ["prettier"],
   "rules": {
     "prettier/prettier": ["error"],
     "comma-dangle": ["error", "always-multiline"],
