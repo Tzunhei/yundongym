@@ -5,14 +5,24 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon ./src/server.js --exec babel-node",
-    "lint:fix": "eslint . --ext .js --cache --fix"
+    "lint:fix": "eslint . --ext .js --cache --fix",
+    "migration:delete": "sequelize-cli db:migrate:undo:all",
+    "migration:run": "sequelize-cli db:migrate",
+    "seed:delete": "sequelize-cli db:seed:undo:all",
+    "seed:run": "sequelize-cli db:seed:all",
+    "db:delete": "yarn migration:delete && yarn seed:delete",
+    "db:reset": "yarn migration:delete && yarn migration:run && yarn seed:run",
+    "db:update": "yarn migration:run && yarn seed:run"
   },
   "dependencies": {
     "apollo-server": "^2.13.0",
+    "bcrypt": "^4.0.1",
+    "dotenv": "^8.2.0",
+    "global": "^4.4.0",
     "graphql": "^15.0.0",
     "lodash": "^4.17.15",
-    "pg": "^8.0.3",
-    "sequelize": "^5.21.7"
+    "mysql2": "^2.1.0",
+    "pg": "^8.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
