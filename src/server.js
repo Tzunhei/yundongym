@@ -1,17 +1,10 @@
 import { ApolloServer } from 'apollo-server';
 import { schema } from './modules/schema';
-import { sequelize } from './db';
+import { sequelize } from './db/models';
 
-const server = new ApolloServer({ schema });
+const { models } = sequelize;
 
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch((err) => {
-    console.error('Unable to connect to the database:', err);
-  });
+const server = new ApolloServer({ schema, context: { models } });
 
 server.listen().then(({ url }) => {
   console.log(`🚀  Server ready at ${url}`);
