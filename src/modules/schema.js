@@ -1,10 +1,12 @@
+import path from 'path';
+import { mergeTypes, mergeResolvers, fileLoader } from 'merge-graphql-schemas';
 import { makeExecutableSchema } from 'apollo-server';
-import { merge } from 'lodash';
-import { UserResolvers, UserTypeDef } from './user';
 
-const typeDefs = [UserTypeDef];
+const typesArray = fileLoader(path.join(__dirname, './**/typeDef.js'));
+const typeDefs = mergeTypes(typesArray, { all: true });
 
-const resolvers = merge(UserResolvers);
+const resolversArray = fileLoader(path.join(__dirname, './**/resolvers.js'));
+const resolvers = mergeResolvers(resolversArray);
 
 const schema = makeExecutableSchema({
   typeDefs,

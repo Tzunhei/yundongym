@@ -26,6 +26,7 @@
     "prefer-const": 2,
     "quotes": ["error", "single"],
     "space-in-parens": ["error", "never"],
-    "strict": [2, "never"]
+    "strict": [2, "never"],
+    "newline-before-return": ["error"]
   }
 }
