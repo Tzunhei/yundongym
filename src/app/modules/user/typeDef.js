@@ -5,8 +5,8 @@ const typeDefs = gql`
   directive @hasRole(roles: [Role!]) on FIELD_DEFINITION
 
   type Query {
-    me: User!
-    users: [User!] @auth @hasRole(roles: [ADMIN])
+    me: User! @auth
+    users: [User!] @auth
   }
 
   type User {

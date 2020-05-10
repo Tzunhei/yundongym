@@ -17,11 +17,11 @@ class HasRoleDirective extends SchemaDirectiveVisitor {
       try {
         const id_token = token.replace('Bearer ', '');
         const { role } = await verify(id_token, process.env.JWT_SECRET);
+
         if (!roles.includes(role))
           throw new AuthenticationError(
             'You are not authorized to perform this operation',
           );
-
         const result = await resolver.apply(this, args);
 
         return result;

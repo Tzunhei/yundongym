@@ -7,7 +7,7 @@ const resolvers = {
   Mutation: {
     login: async (_, { input }, { models }) => {
       const { User } = models;
-      const { role, email, password } = input;
+      const { email, password } = input;
 
       const user = await User.findOne({ where: { email } });
 
@@ -15,7 +15,7 @@ const resolvers = {
       if (!isAuthenticated) throw new Error('Authentification failed');
 
       const jwtToken = sign(
-        { id: user.id, role, email },
+        { id: user.id, role: user.role, email },
         process.env.JWT_SECRET,
         {
           expiresIn: '7d',
