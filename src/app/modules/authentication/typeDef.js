@@ -12,6 +12,7 @@ const typeDefs = gql`
   }
 
   input registerInput {
+    role: Role
     username: String!
     email: String!
     password: String!
@@ -20,6 +21,11 @@ const typeDefs = gql`
   type loginResponse {
     message: String!
     token: String!
+  }
+
+  enum Role {
+    ADMIN
+    USER
   }
 `;
 
