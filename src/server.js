@@ -1,5 +1,5 @@
 import { ApolloServer } from 'apollo-server';
-import { schema } from './modules/schema';
+import { schema } from './app/schema';
 import { sequelize } from './db/models';
 
 const { models } = sequelize;
