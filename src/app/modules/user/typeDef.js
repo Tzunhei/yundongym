@@ -1,8 +1,10 @@
 import { gql } from 'apollo-server';
 
 const typeDefs = gql`
+  directive @auth on FIELD_DEFINITION
+
   type Query {
-    user: User!
+    user: User! @auth
   }
 
   type User {

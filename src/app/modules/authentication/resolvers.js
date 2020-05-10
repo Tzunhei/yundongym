@@ -14,7 +14,7 @@ const resolvers = {
       const isAuthenticated = await compare(password, user.password);
       if (!isAuthenticated) throw new Error('Authentification failed');
 
-      const jwtToken = sign({ email }, process.env.JWT_SECRET, {
+      const jwtToken = sign({ id: user.id, email }, process.env.JWT_SECRET, {
         expiresIn: '7d',
       });
 
