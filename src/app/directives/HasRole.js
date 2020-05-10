@@ -3,9 +3,11 @@ import { defaultFieldResolver } from 'graphql';
 import { AuthenticationError } from 'apollo-server';
 import { verify } from 'jsonwebtoken';
 
-class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
+class HasRoleDirective extends SchemaDirectiveVisitor {
   visitFieldDefinition(field) {
     const { resolve: resolver = defaultFieldResolver } = field;
+
+    const { roles } = this.args;
 
     field.resolve = async function (result, args, context, info) {
       if (!context || !context.headers || !context.headers.authorization) {
@@ -14,7 +16,7 @@ class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
       const token = context.headers.authorization;
       try {
         const id_token = token.replace('Bearer ', '');
-        await verify(id_token, process.env.JWT_SECRET);
+        const decode = await verify(id_token, process.env.JWT_SECRET);
 
         const result = await resolver.apply(this, args);
 
@@ -28,4 +30,4 @@ class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
   }
 }
 
-export { IsAuthenticatedDirective };
+export { HasRoleDirective };

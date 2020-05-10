@@ -2,15 +2,21 @@ import { gql } from 'apollo-server';
 
 const typeDefs = gql`
   directive @auth on FIELD_DEFINITION
+  directive @hasRole(roles: [Role!]) on FIELD_DEFINITION
 
   type Query {
-    user: User! @auth
+    user: User! @auth @hasRole(roles: [ADMIN])
   }
 
   type User {
     username: String!
     email: String!
     password: String!
+  }
+
+  enum Role {
+    ADMIN
+    USER
   }
 `;
 
