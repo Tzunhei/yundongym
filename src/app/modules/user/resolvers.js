@@ -1,12 +1,18 @@
+import { decode } from 'jsonwebtoken';
+
 const resolvers = {
   Query: {
-    user: () => {
-      return {
-        role: 'ADMIN',
-        username: 'Pikachu',
-        email: 'test@gmail.com',
-        password: 'password',
-      };
+    me: (parent, args, { headers, models }) => {
+      const token = headers.authorization.replace('Bearer ', '');
+      const { id } = decode(token, process.env.JWT_SECRET);
+      const { User } = models;
+
+      return User.findOne({ where: { id } });
+    },
+    users: (parent, args, { models }) => {
+      const { User } = models;
+
+      return User.findAll({});
     },
   },
 };
