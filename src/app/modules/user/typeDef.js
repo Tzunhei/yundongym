@@ -13,7 +13,6 @@ const typeDefs = gql`
     role: Role!
     username: String!
     email: String!
-    password: String!
   }
 
   enum Role {
