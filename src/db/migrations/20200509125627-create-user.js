@@ -7,6 +7,11 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
       },
+      role: {
+        type: Sequelize.ENUM('ADMIN', 'USER'),
+        allowNull: false,
+        defaultValue: 'USER',
+      },
       username: {
         type: Sequelize.STRING,
         allowNull: false,

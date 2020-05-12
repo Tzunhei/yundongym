@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
+      role: DataTypes.ENUM('ADMIN', 'USER'),
       username: DataTypes.STRING,
       email: DataTypes.STRING,
       password: DataTypes.STRING,

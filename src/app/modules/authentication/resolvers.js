@@ -14,15 +14,19 @@ const resolvers = {
       const isAuthenticated = await compare(password, user.password);
       if (!isAuthenticated) throw new Error('Authentification failed');
 
-      const jwtToken = sign({ id: user.id, email }, process.env.JWT_SECRET, {
-        expiresIn: '7d',
-      });
+      const jwtToken = sign(
+        { id: user.id, role: user.role, email },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: '7d',
+        },
+      );
 
       return { message: 'User successfully login', token: jwtToken };
     },
     register: async (_, { input }, { models }) => {
       const { User } = models;
-      const { username, email, password } = input;
+      const { role, username, email, password } = input;
       const cryptedPassword = await hash(password, saltRounds);
 
       if (await User.findOne({ where: { username, email } }))
@@ -30,7 +34,7 @@ const resolvers = {
           `User with username '${username}' and email '${email}' already exists`,
         );
 
-      await User.create({ username, email, password: cryptedPassword });
+      await User.create({ role, username, email, password: cryptedPassword });
 
       return true;
     },
