@@ -1,6 +1,6 @@
 import { SchemaDirectiveVisitor } from 'graphql-tools';
 import { defaultFieldResolver } from 'graphql';
-import { AuthenticationError } from 'apollo-server';
+import { AuthenticationError, ForbiddenError } from 'apollo-server';
 import { verify } from 'jsonwebtoken';
 
 class HasRoleDirective extends SchemaDirectiveVisitor {
@@ -19,17 +19,18 @@ class HasRoleDirective extends SchemaDirectiveVisitor {
         const id_token = token.replace('Bearer ', '');
         const { role } = await verify(id_token, process.env.JWT_SECRET);
 
-        if (!roles.includes(role))
-          throw new AuthenticationError(
-            'You are not authorized to perform this operation',
+        if (!roles.includes(role)) {
+          throw new ForbiddenError(
+            `Your role ${role} does not authorize you to perform this operation`,
           );
+        }
+
         const result = await resolver.apply(this, args);
 
         return result;
       } catch (error) {
-        throw new AuthenticationError({
-          message: 'You are not authorized to perform this operation',
-        });
+        console.log(error);
+        throw new ForbiddenError(error.message);
       }
     };
   }
