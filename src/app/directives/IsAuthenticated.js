@@ -5,9 +5,10 @@ import { verify } from 'jsonwebtoken';
 
 class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
   visitFieldDefinition(field) {
-    const { resolve: resolver = defaultFieldResolver } = field;
+    const { resolve = defaultFieldResolver } = field;
 
-    field.resolve = async function (result, args, context, info) {
+    field.resolve = async function (...args) {
+      const [, , context] = args;
       if (!context || !context.headers || !context.headers.authorization) {
         throw new AuthenticationError({ message: 'No authorization token.' });
       }
@@ -16,7 +17,7 @@ class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
         const id_token = token.replace('Bearer ', '');
         await verify(id_token, process.env.JWT_SECRET);
 
-        const result = await resolver.apply(this, args);
+        const result = await resolve.apply(this, args);
 
         return result;
       } catch (error) {

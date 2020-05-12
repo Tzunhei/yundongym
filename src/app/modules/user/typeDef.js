@@ -6,7 +6,7 @@ const typeDefs = gql`
 
   type Query {
     me: User! @auth
-    users: [User!] @auth
+    users: [User!] @auth @hasRole(roles: [ADMIN])
   }
 
   type User {

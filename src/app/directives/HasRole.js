@@ -9,7 +9,8 @@ class HasRoleDirective extends SchemaDirectiveVisitor {
 
     const { roles } = this.args;
 
-    field.resolve = async function (result, args, context, info) {
+    field.resolve = async function (...args) {
+      const [, , context] = args;
       if (!context || !context.headers || !context.headers.authorization) {
         throw new AuthenticationError({ message: 'No authorization token.' });
       }
