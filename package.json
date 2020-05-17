@@ -15,6 +15,7 @@
     "db:update": "yarn migration:run && yarn seed:run"
   },
   "dependencies": {
+    "@sendgrid/mail": "^7.1.1",
     "apollo-server": "^2.13.0",
     "bcrypt": "^4.0.1",
     "dotenv": "^8.2.0",
