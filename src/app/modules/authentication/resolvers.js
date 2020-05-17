@@ -1,5 +1,6 @@
 import { hash, compare } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
+import { sendActivationEmail } from 'utils/email';
 
 const saltRounds = 12;
 
@@ -35,6 +36,11 @@ const resolvers = {
         );
 
       await User.create({ role, username, email, password: cryptedPassword });
+
+      const activationToken = sign({ email, role }, process.env.JWT_SECRET, {
+        expiresIn: '1d',
+      });
+      await sendActivationEmail(email, activationToken);
 
       return true;
     },
