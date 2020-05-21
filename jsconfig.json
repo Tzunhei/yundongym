@@ -1,5 +1,11 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    // "paths": {
+    //   "*": ["src/*"],
+    //   "@utils/*": ["utils/*"],
+    //   "@modules/*": ["modules/*"],
+    //   "@models/*": ["db/models/*"]
+    // }
   }
 }
