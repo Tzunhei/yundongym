@@ -1,6 +1,7 @@
 import { hash, compare } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
-import { sendActivationEmail } from 'utils/email';
+import { sendActivationEmail } from 'app/utils/email';
+require('dotenv').config();
 
 const saltRounds = 12;
 

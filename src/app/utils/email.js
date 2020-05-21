@@ -1,6 +1,7 @@
-import { setApiKey, send } from '@sendgrid/mail';
+import sgMail from '@sendgrid/mail';
+require('dotenv').config();
 
-setApiKey(process.env.SENDGRID_API_KEY);
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 export const sendActivationEmail = async (to, activationToken) => {
   const activationEmail = {
@@ -9,5 +10,5 @@ export const sendActivationEmail = async (to, activationToken) => {
     subject: 'activation email',
     html: `<a href="http://localhost:3000/activate/${activationToken}">Activate your account</a>`,
   };
-  await send(activationEmail);
+  await sgMail.send(activationEmail);
 };
