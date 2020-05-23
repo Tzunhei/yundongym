@@ -8,11 +8,11 @@
  ],
  "plugins": [
     ["module-resolver", {
-      "root": ["./src"],
+      "root":  "./src",
       "alias": {
-        "@utils": "./app/utils",
-        "@modules": "./app/modules",
-        "@models": "./app/db/models"
+        "@utils": "./src/app/utils",
+        "@modules": "./src/app/modules",
+        "@models": "./src/db/models"
       }
     }]
   ]
