@@ -1,5 +1,5 @@
 {
-  "extends": ["prettier", "eslint:recommended"],
+  "extends": ["prettier", "eslint:recommended", "plugin:import/errors", "plugin:import/warnings"],
   "env": {
     "node": true,
     "es6": true,
@@ -28,5 +28,10 @@
     "space-in-parens": ["error", "never"],
     "strict": [2, "never"],
     "newline-before-return": ["error"]
+  },
+  "settings": {
+    "import/resolver": {
+      "babel-module": {}
+    }
   }
 }

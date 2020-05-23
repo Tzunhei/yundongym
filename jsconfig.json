@@ -1,11 +1,12 @@
 {
-  "compilerOptions": {
-    "baseUrl": "./src",
-    // "paths": {
-    //   "*": ["src/*"],
-    //   "@utils/*": ["utils/*"],
-    //   "@modules/*": ["modules/*"],
-    //   "@models/*": ["db/models/*"]
-    // }
-  }
+	"compilerOptions": {
+		"baseUrl": "./",
+		"paths": {
+			"*": ["./src/*"],
+			"@utils/*": ["./src/utils/*"],
+			"@modules/*": ["./src/modules/*"],
+			"@models/*": ["./src/db/models/*"]
+		}
+	},
+	"exclude": ["node_modules", "dist"]
 }
