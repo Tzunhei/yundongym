@@ -5,6 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon ./src/server.js --exec babel-node",
+    "build": "babel ./src -d dist",
+    "serve": "node dist/server.js",
     "lint:fix": "eslint . --ext .js --cache --fix",
     "migration:delete": "sequelize-cli db:migrate:undo:all",
     "migration:run": "sequelize-cli db:migrate",
