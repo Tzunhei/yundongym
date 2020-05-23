@@ -15,6 +15,9 @@ const resolvers = {
       return User.findAll({});
     },
   },
+  Mutation: {
+    updateUser: (parent, { input }, { models }) => {},
+  },
 };
 
 export default resolvers;
