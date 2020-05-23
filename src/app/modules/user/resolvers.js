@@ -1,14 +1,6 @@
-import { verify } from 'jsonwebtoken';
-
 const resolvers = {
   Query: {
-    me: (parent, args, { headers, models }) => {
-      const token = headers.authorization.replace('Bearer ', '');
-      const { id } = verify(token, process.env.JWT_SECRET);
-      const { User } = models;
-
-      return User.findOne({ where: { id } });
-    },
+    me: (parent, args, { loggedUser }) => loggedUser,
     users: (parent, args, { models }) => {
       const { User } = models;
 
