@@ -8,7 +8,7 @@ const resolvers = {
     },
   },
   Mutation: {
-    updateUser: (parent, { input }, { models }) => {},
+    updateUser: (parent, { input }, { loggedUser, models }) => {},
   },
 };
 

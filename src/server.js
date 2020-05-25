@@ -5,22 +5,28 @@ import { sequelize } from './db/models';
 
 const { models } = sequelize;
 
-const server = new ApolloServer({
-  schema,
-  context: async ({ req }) => {
-    let loggedUser;
-    if (req.headers.authorization) {
+const context = async ({ req }) => {
+  let loggedUser;
+  if (req.headers.authorization) {
+    try {
       const token = req.headers.authorization.replace('Bearer ', '');
-      const { id } = verify(token, process.env.JWT_SECRET);
+      const { id } = await verify(token, process.env.JWT_SECRET);
       const { User } = models;
       loggedUser = await User.findOne({ where: { id } });
+    } catch (error) {
+      throw new Error(error);
     }
+  }
 
-    return {
-      loggedUser,
-      models,
-    };
-  },
+  return {
+    loggedUser,
+    models,
+  };
+};
+
+const server = new ApolloServer({
+  schema,
+  context,
 });
 
 server.listen().then(({ url }) => {
