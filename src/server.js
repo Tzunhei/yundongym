@@ -5,11 +5,11 @@ import { sequelize } from './db/models';
 
 const { models } = sequelize;
 
-const context = async ({ req }) => {
+const context = async ({ req: { headers } }) => {
   let loggedUser;
-  if (req.headers.authorization) {
+  if (headers.authorization) {
     try {
-      const token = req.headers.authorization.replace('Bearer ', '');
+      const token = headers.authorization.replace('Bearer ', '');
       const { id } = await verify(token, process.env.JWT_SECRET);
       const { User } = models;
       loggedUser = await User.findOne({ where: { id } });
@@ -19,6 +19,7 @@ const context = async ({ req }) => {
   }
 
   return {
+    headers,
     loggedUser,
     models,
   };

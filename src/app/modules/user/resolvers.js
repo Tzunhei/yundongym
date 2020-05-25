@@ -1,14 +1,21 @@
 const resolvers = {
   Query: {
     me: (parent, args, { loggedUser }) => loggedUser,
-    users: (parent, args, { models }) => {
+    users: async (parent, args, { models }) => {
       const { User } = models;
 
-      return User.findAll({});
+      return await User.findAll({});
     },
   },
   Mutation: {
-    updateUser: (parent, { input }, { loggedUser, models }) => {},
+    updateUser: async (parent, { input }, { loggedUser, models }) => {
+      const { User } = models;
+      const { id } = loggedUser;
+
+      await User.update({ ...input }, { where: { id } });
+
+      return await User.findAll({ where: { id } });
+    },
   },
 };
 

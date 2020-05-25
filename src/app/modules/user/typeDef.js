@@ -10,7 +10,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    updateUser(input: userInput!): User!
+    updateUser(input: userInput!): User! @auth
   }
 
   type User {
@@ -21,10 +21,9 @@ const typeDefs = gql`
   }
 
   input userInput {
-    id: ID!
     role: Role
     username: String
-    email: String!
+    email: String
     isConfirmed: Boolean
   }
 

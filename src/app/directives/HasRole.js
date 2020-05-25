@@ -12,7 +12,7 @@ class HasRoleDirective extends SchemaDirectiveVisitor {
     field.resolve = async function (...args) {
       const [, , context] = args;
       if (!context || !context.headers || !context.headers.authorization) {
-        throw new AuthenticationError({ message: 'No authorization token.' });
+        throw new AuthenticationError('No authorization token.');
       }
       const token = context.headers.authorization;
       try {
@@ -29,7 +29,6 @@ class HasRoleDirective extends SchemaDirectiveVisitor {
 
         return result;
       } catch (error) {
-        console.log(error);
         throw new ForbiddenError(error.message);
       }
     };
