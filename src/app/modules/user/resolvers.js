@@ -14,7 +14,7 @@ const resolvers = {
 
       await User.update({ ...input }, { where: { id } });
 
-      return await User.findAll({ where: { id } });
+      return await User.findOne({ where: { id } });
     },
   },
 };
