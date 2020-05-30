@@ -11,3 +11,14 @@ export const sendActivationEmail = async (to, activationToken) => {
   };
   await sgMail.send(activationEmail);
 };
+
+export const sendAccountActivatedEmail = async (to) => {
+  const accountActivatedEmail = {
+    to,
+    from: 'test@sendgrid.com',
+    subject: 'confirmation email',
+    html:
+      '<a href="http://localhost:3000/login">Your account is activated.</a>',
+  };
+  await sgMail.send(accountActivatedEmail);
+};

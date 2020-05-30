@@ -9,10 +9,22 @@ const typeDefs = gql`
     users: [User!] @auth @hasRole(roles: [USER])
   }
 
+  type Mutation {
+    updateUser(input: userInput!): User! @auth
+    confirmUser(token: String!): Boolean!
+  }
+
   type User {
     role: Role!
     username: String!
     email: String!
+    isConfirmed: Boolean!
+  }
+
+  input userInput {
+    role: Role
+    username: String
+    email: String
   }
 
   enum Role {

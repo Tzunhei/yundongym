@@ -1,18 +1,36 @@
 import { verify } from 'jsonwebtoken';
+import { sendAccountActivatedEmail } from '@utils/email';
 
 const resolvers = {
   Query: {
-    me: (parent, args, { headers, models }) => {
-      const token = headers.authorization.replace('Bearer ', '');
-      const { id } = verify(token, process.env.JWT_SECRET);
+    me: (parent, args, { loggedUser }) => loggedUser,
+    users: async (parent, args, { models }) => {
       const { User } = models;
 
-      return User.findOne({ where: { id } });
+      return await User.findAll({});
     },
-    users: (parent, args, { models }) => {
+  },
+  Mutation: {
+    updateUser: async (parent, { input }, { loggedUser, models }) => {
       const { User } = models;
+      const { id } = loggedUser;
 
-      return User.findAll({});
+      await User.update({ ...input }, { where: { id } });
+
+      return await User.findOne({ where: { id } });
+    },
+    confirmUser: async (parent, { token }, { models }) => {
+      const { User } = models;
+      const { email } = verify(token, process.env.JWT_SECRET);
+      const user = await User.findOne({ where: { email } });
+      if (user.isConfirmed)
+        throw new Error('Your account is already activated');
+
+      await User.update({ isConfirmed: true }, { where: { id: user.id } });
+
+      await sendAccountActivatedEmail(email);
+
+      return true;
     },
   },
 };
