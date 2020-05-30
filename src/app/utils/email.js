@@ -22,3 +22,13 @@ export const sendAccountActivatedEmail = async (to) => {
   };
   await sgMail.send(accountActivatedEmail);
 };
+
+export const sendResetPasswordEmail = async (to, resetToken) => {
+  const resetPasswordEmail = {
+    to,
+    from: 'test@sendgrid.com',
+    subject: 'reset password',
+    html: `<a href="http://localhost:3000/resetPassword/${resetToken}">Reset your password</a>`,
+  };
+  await sgMail.send(resetPasswordEmail);
+};
