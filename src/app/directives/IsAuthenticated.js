@@ -18,7 +18,6 @@ class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
         await verify(id_token, process.env.JWT_SECRET);
 
         const result = await resolve.apply(this, args);
-        console.log(result);
 
         return result;
       } catch (error) {
