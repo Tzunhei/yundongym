@@ -1,4 +1,5 @@
 import { verify } from 'jsonwebtoken';
+import { sendAccountActivatedEmail } from '@utils/email';
 
 const resolvers = {
   Query: {
@@ -20,12 +21,14 @@ const resolvers = {
     },
     confirmUser: async (parent, { token }, { models }) => {
       const { User } = models;
-      const { email } = await verify(token, process.env.JWT_SECRET);
+      const { email } = verify(token, process.env.JWT_SECRET);
       const user = await User.findOne({ where: { email } });
       if (user.isConfirmed)
         throw new Error('Your account is already activated');
 
       await User.update({ isConfirmed: true }, { where: { id: user.id } });
+
+      await sendAccountActivatedEmail(email);
 
       return true;
     },
