@@ -15,8 +15,8 @@ const typeDefs = gql`
     updatePassword(oldPassword: String!, newPassword: String!): Boolean! @auth
     triggerResetPassword(email: String!): Boolean!
     resetPassword(token: String!, newPassword: String!): Boolean!
-    disableUser(id: String): Boolean! @auth
-    deleteUser(id: String!): Boolean! @hasRole(roles: [ADMIN])
+    disableAccount(id: String): Boolean! @auth
+    deleteAccount(id: String!): Boolean! @hasRole(roles: [ADMIN])
   }
 
   type User {

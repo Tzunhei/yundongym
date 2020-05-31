@@ -82,6 +82,25 @@ const resolvers = {
 
       return true;
     },
+    disableAccount: async (parent, { id }, { loggedUser, models }) => {
+      const { User } = models;
+      const userId = id || loggedUser.id;
+
+      const user = await User.findOne({ where: { id: userId } });
+      await User.update(
+        { isDisabled: !user.isDisabled },
+        { where: { id: userId } },
+      );
+
+      return true;
+    },
+    deleteAccount: async (parent, { id }, { models }) => {
+      const { User } = models;
+      const user = await User.findOne({ where: { id } });
+      user.destroy();
+
+      return true;
+    },
   },
 };
 
