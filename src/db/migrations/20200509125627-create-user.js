@@ -15,16 +15,23 @@ module.exports = {
       username: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true,
       },
       email: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true,
       },
       password: {
         type: Sequelize.STRING,
         allowNull: false,
       },
       isConfirmed: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+        allowNull: false,
+      },
+      isDisabled: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
         allowNull: false,
