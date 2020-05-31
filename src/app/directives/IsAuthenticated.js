@@ -21,9 +21,11 @@ class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
 
         return result;
       } catch (error) {
-        throw new AuthenticationError(
-          'You are not authorized to perform this operation',
-        );
+        // throw new AuthenticationError(
+        //   'You are not authorized to perform this operation',
+        // );
+
+        return error;
       }
     };
   }
