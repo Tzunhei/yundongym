@@ -12,12 +12,10 @@ module.exports = {
       userId: {
         type: Sequelize.UUID,
         references: {
-          model: {
-            tableName: 'Users',
-            schema: 'schema',
-          },
+          model: 'Users',
           key: 'id',
         },
+        onDelete: 'CASCADE',
       },
       name: {
         type: Sequelize.STRING,

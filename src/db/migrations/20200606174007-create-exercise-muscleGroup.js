@@ -12,22 +12,18 @@ module.exports = {
       exerciseId: {
         type: Sequelize.INTEGER,
         references: {
-          model: {
-            tableName: 'Exercises',
-            schema: 'schema',
-          },
+          model: 'Exercises',
           key: 'id',
         },
+        onDelete: 'CASCADE',
       },
       muscleGroupId: {
         type: Sequelize.INTEGER,
         references: {
-          model: {
-            tableName: 'MuscleGroups',
-            schema: 'schema',
-          },
+          model: 'MuscleGroups',
           key: 'id',
         },
+        onDelete: 'CASCADE',
       },
     });
   },
