@@ -12,28 +12,17 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      sets: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: 1,
-      },
-      repetitions: {
-        type: DataTypes.ARRAY(DataTypes.INTEGER),
-        allowNull: false,
-        defaultValue: 1,
-      },
-      duration: {
-        type: DataTypes.TIME,
-      },
-      weight: {
-        type: DataTypes.ARRAY(DataTypes.INTEGER),
-        allowNull: false,
-      },
     },
     {},
   );
-  Exercise.associate = function ({ Exercise, Workout }) {
-    Exercise.belongsTo(Workout, { foreignKey: 'workoutId' });
+  Exercise.associate = function ({
+    Exercise,
+    Set,
+    MuscleGroup,
+    ExerciseMuscleGroup,
+  }) {
+    Exercise.belongsTo(Set, { foreignKey: 'setId' });
+    Exercise.belongsToMany(MuscleGroup, { through: ExerciseMuscleGroup });
   };
 
   return Exercise;
