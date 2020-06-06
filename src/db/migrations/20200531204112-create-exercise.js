@@ -17,17 +17,34 @@ module.exports = {
         },
         key: 'id',
       },
+      performanceId: {
+        type: Sequelize.UUID,
+        references: {
+          tableName: 'Performances',
+          schema: 'schema',
+        },
+        key: 'id',
+      },
       name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      numberOfRepetitions: {
+      sets: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: 0,
+        defaultValue: 1,
+      },
+      repetitions: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
       },
       duration: {
         type: Sequelize.TIME,
+      },
+      weight: {
+        type: Sequelize.ARRAY(Sequelize.INTEGER),
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,

@@ -12,11 +12,18 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      duration: {
+        type: DataTypes.TIME,
+      },
+      date: {
+        type: DataTypes.DATE,
+      },
     },
     {},
   );
-  Workout.associate = function ({ Workout, User }) {
+  Workout.associate = function ({ Workout, User, Exercise }) {
     Workout.belongsTo(User, { foreignKey: 'userId' });
+    Workout.hasMany(Exercise, { foreignKey: 'workoutId' });
   };
 
   return Workout;
