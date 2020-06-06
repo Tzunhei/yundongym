@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 1,
       },
       repetitions: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.ARRAY(DataTypes.INTEGER),
         allowNull: false,
         defaultValue: 1,
       },

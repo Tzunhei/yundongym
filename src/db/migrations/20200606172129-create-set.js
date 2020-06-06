@@ -2,24 +2,48 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Performances', {
+    return queryInterface.createTable('Sets', {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
       },
-      setId: {
+      workoutId: {
         type: Sequelize.UUID,
         references: {
-          tableName: 'Sets',
+          tableName: 'Workouts',
           schema: 'schema',
         },
         key: 'id',
       },
+      exerciseId: {
+        type: Sequelize.UUID,
+        references: {
+          tableName: 'Exercises',
+          schema: 'schema',
+        },
+        key: 'id',
+      },
+      performanceId: {
+        type: Sequelize.UUID,
+        references: {
+          tableName: 'Performances',
+          schema: 'schema',
+        },
+        key: 'id',
+      },
+      numberOfSets: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
+      },
       repetitions: {
         type: Sequelize.ARRAY(Sequelize.INTEGER),
         allowNull: false,
+      },
+      duration: {
+        type: Sequelize.TIME,
       },
       weight: {
         type: Sequelize.ARRAY(Sequelize.INTEGER),
@@ -37,6 +61,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Performances');
+    return queryInterface.dropTable('Sets');
   },
 };
