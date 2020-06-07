@@ -6,12 +6,29 @@ const typeDefs = gql`
 
   type Query {
     myWorkouts: [Workout!] @auth
-    getWorkoutById(id:ID!): Workout!
+    getWorkoutById(id: ID!): Workout!
     getWorkoutByUserId(userId: ID!): Workout!
   }
 
   type Mutation {
-    
+    createWorkout(input: workoutInput!): Workout! @auth
+    editWorkout(id: ID!, input: workoutInput!): Workout! @auth
+    deleteWorkout(id: ID!) @auth
+  }
+
+  input workoutInput {
+    name: String!
+    duration: String
+    date: String
+    sets: [setInput!]!
+  }
+
+  input setInput {
+    numberOfSets: Int!
+    repetitions: [Int!]!
+    duration: String
+    weight: [Int!]!
+    exercise: ID!
   }
 
   type Workout {
@@ -41,7 +58,6 @@ const typeDefs = gql`
     id: ID
     name: String
   }
-
 `;
 
 export default typeDefs;
