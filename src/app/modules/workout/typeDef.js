@@ -12,8 +12,8 @@ const typeDefs = gql`
 
   type Mutation {
     createWorkout(input: workoutInput!): Workout! @auth
-    editWorkout(id: ID!, input: workoutInput!): Workout! @auth
-    deleteWorkout(id: ID!) @auth
+    updateWorkout(id: ID!, input: workoutInput!): Workout! @auth
+    deleteWorkout(id: ID!): Boolean! @auth
   }
 
   input workoutInput {
