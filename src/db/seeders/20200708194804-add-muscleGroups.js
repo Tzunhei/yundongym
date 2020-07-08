@@ -2,10 +2,10 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('Exercise', [{}]);
+    return queryInterface.bulkInsert('MuscleGroups', [{}]);
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('Exercise', null, {});
+    return queryInterface.bulkDelete('MuscleGroups', {});
   },
 };
