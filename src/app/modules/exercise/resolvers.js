@@ -9,14 +9,17 @@ const resolvers = {
   },
   Mutation: {
     createExercise: async (_, { input }, { models }) => {
-      const { Exercise } = models;
+      const { Exercise, MuscleGroup } = models;
       const { name, muscleGroup } = input;
       const exercise = await Exercise.create({
         name,
       });
       await exercise.addMuscleGroups([muscleGroup]);
 
-      return Exercise.findOne({ where: { id: exercise.id } });
+      return Exercise.findOne({
+        where: { id: exercise.id },
+        include: MuscleGroup,
+      });
     },
   },
 };
