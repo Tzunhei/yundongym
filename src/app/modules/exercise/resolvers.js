@@ -14,7 +14,7 @@ const resolvers = {
       const exercise = await Exercise.create({
         name,
       });
-      await exercise.addMuscleGroups({ muscleGroupId: muscleGroup });
+      await exercise.addMuscleGroups([muscleGroup]);
 
       return Exercise.findOne({ where: { id: exercise.id } });
     },

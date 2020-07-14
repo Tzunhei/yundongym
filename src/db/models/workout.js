@@ -22,8 +22,8 @@ module.exports = (sequelize, DataTypes) => {
     {},
   );
   Workout.associate = function ({ Workout, User, Set }) {
-    Workout.belongsTo(User, { foreignKey: 'userId' });
-    Workout.hasMany(Set, { foreignKey: 'workoutId' });
+    Workout.belongsTo(User, { foreignKey: 'UserId' });
+    Workout.hasMany(Set, { foreignKey: 'WorkoutId' });
   };
 
   return Workout;

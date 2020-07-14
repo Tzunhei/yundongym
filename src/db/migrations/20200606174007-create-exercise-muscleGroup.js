@@ -2,14 +2,8 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('ExercisesMuscleGroups', {
-      id: {
-        allowNull: false,
-        primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
-      },
-      exerciseId: {
+    return queryInterface.createTable('ExerciseMuscleGroups', {
+      ExerciseId: {
         type: Sequelize.UUID,
         references: {
           model: 'Exercises',
@@ -17,7 +11,7 @@ module.exports = {
         },
         onDelete: 'CASCADE',
       },
-      muscleGroupId: {
+      MuscleGroupId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'MuscleGroups',
@@ -29,6 +23,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('ExercisesMuscleGroups');
+    return queryInterface.dropTable('ExerciseMuscleGroups');
   },
 };

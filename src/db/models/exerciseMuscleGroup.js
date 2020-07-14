@@ -2,17 +2,17 @@ module.exports = (sequelize, DataTypes) => {
   const ExerciseMuscleGroup = sequelize.define(
     'ExerciseMuscleGroup',
     {
-      muscleGroupId: {
+      MuscleGroupId: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-          model: 'MuscleGroups',
+          model: 'MuscleGroup',
           key: 'id',
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      exerciseId: {
+      ExerciseId: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
@@ -23,7 +23,9 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE',
       },
     },
-    {},
+    {
+      timestamps: false,
+    },
   );
 
   return ExerciseMuscleGroup;

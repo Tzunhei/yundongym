@@ -28,8 +28,8 @@ module.exports = (sequelize, DataTypes) => {
     {},
   );
   Set.associate = function ({ Set, Workout, Exercise }) {
-    Set.belongsTo(Workout, { foreignKey: 'workoutId' });
-    Set.belongsTo(Exercise, { foreignKey: 'exerciseId' });
+    Set.belongsTo(Workout, { foreignKey: 'WorkoutId' });
+    Set.belongsTo(Exercise, { foreignKey: 'ExerciseId' });
   };
 
   return Set;

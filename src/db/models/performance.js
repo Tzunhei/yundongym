@@ -20,8 +20,8 @@ module.exports = (sequelize, DataTypes) => {
     {},
   );
   Performance.associate = function ({ Performance, User, Set }) {
-    Performance.belongsTo(User, { foreignKey: 'userId' });
-    Performance.belongsTo(Set, { foreignKey: 'setId' });
+    Performance.belongsTo(User, { foreignKey: 'UserId' });
+    Performance.belongsTo(Set, { foreignKey: 'SetId' });
   };
 
   return Performance;

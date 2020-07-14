@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
       },
-      workoutId: {
+      WorkoutId: {
         type: Sequelize.UUID,
         references: {
           model: 'Workouts',
@@ -17,7 +17,7 @@ module.exports = {
         },
         onDelete: 'CASCADE',
       },
-      exerciseId: {
+      ExerciseId: {
         type: Sequelize.UUID,
         references: {
           model: 'Exercises',
