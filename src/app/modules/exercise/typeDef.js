@@ -15,7 +15,7 @@ const typeDefs = gql`
     updateExercise(id: Int!, input: exerciseInput!): Exercise!
       @auth
       @hasRole(roles: [ADMIN])
-    deleteExercise(id: Int!): Boolean! @auth @hasRole(roles: [ADMIN])
+    deleteExercise(id: ID!): Boolean! @auth @hasRole(roles: [ADMIN])
   }
 
   input exerciseInput {

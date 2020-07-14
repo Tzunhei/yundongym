@@ -27,6 +27,13 @@ const resolvers = {
         include: { model: MuscleGroup, as: 'muscleGroups' },
       });
     },
+    updateExercise: async (_, { input }, { models }) => {},
+    deleteExercise: async (_, { id }, { models: { Exercise } }) => {
+      const deletedExercise = await Exercise.findOne({ where: { id } });
+      await deletedExercise.destroy();
+
+      return true;
+    },
   },
 };
 
