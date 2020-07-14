@@ -22,7 +22,9 @@ module.exports = (sequelize, DataTypes) => {
     Exercise,
     ExerciseMuscleGroup,
   }) {
-    MuscleGroup.belongsToMany(Exercise, { through: ExerciseMuscleGroup });
+    MuscleGroup.belongsToMany(Exercise, {
+      through: ExerciseMuscleGroup,
+    });
   };
 
   return MuscleGroup;

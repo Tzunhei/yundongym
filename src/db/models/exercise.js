@@ -23,7 +23,10 @@ module.exports = (sequelize, DataTypes) => {
     ExerciseMuscleGroup,
   }) {
     Exercise.hasMany(Set, { foreignKey: 'ExerciseId' });
-    Exercise.belongsToMany(MuscleGroup, { through: ExerciseMuscleGroup });
+    Exercise.belongsToMany(MuscleGroup, {
+      through: ExerciseMuscleGroup,
+      as: 'muscleGroup',
+    });
   };
 
   return Exercise;

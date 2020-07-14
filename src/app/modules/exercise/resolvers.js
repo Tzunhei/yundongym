@@ -1,10 +1,14 @@
 const resolvers = {
   Query: {
     getExercises: async (_, { id }, { models }) => {
-      const { Exercise } = models;
+      const { Exercise, MuscleGroup } = models;
       if (id) return await Exercise.findOne({ where: { id } });
 
-      return await Exercise.findAll({});
+      const allExercises = await Exercise.findAll({
+        include: { model: MuscleGroup, as: 'muscleGroup' },
+      });
+
+      return allExercises;
     },
   },
   Mutation: {
