@@ -10,7 +10,7 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4,
       },
       exerciseId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         references: {
           model: 'Exercises',
           key: 'id',

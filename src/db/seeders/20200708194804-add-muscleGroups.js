@@ -19,13 +19,25 @@ module.exports = {
         name: 'calves',
       },
       {
-        name: 'arms',
+        name: 'biceps',
+      },
+      {
+        name: 'triceps',
+      },
+      {
+        name: 'forearms',
       },
       {
         name: 'abdominals',
       },
       {
         name: 'glutes',
+      },
+      {
+        name: 'quadriceps',
+      },
+      {
+        name: 'hamstrings',
       },
     ]);
   },
