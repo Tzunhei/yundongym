@@ -51,7 +51,7 @@ const typeDefs = gql`
   type Exercise {
     id: ID
     name: String
-    muscleGroup: [MuscleGroup!]
+    muscleGroups: [MuscleGroup!]
   }
 
   type MuscleGroup {

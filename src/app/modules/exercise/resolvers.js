@@ -2,27 +2,29 @@ const resolvers = {
   Query: {
     getExercises: async (_, { id }, { models }) => {
       const { Exercise, MuscleGroup } = models;
-      if (id) return await Exercise.findOne({ where: { id } });
+      if (id)
+        return await Exercise.findOne({
+          where: { id },
+          include: { model: MuscleGroup, as: 'muscleGroups' },
+        });
 
-      const allExercises = await Exercise.findAll({
-        include: { model: MuscleGroup, as: 'muscleGroup' },
+      return await Exercise.findAll({
+        include: { model: MuscleGroup, as: 'muscleGroups' },
       });
-
-      return allExercises;
     },
   },
   Mutation: {
     createExercise: async (_, { input }, { models }) => {
       const { Exercise, MuscleGroup } = models;
-      const { name, muscleGroup } = input;
+      const { name, muscleGroups } = input;
       const exercise = await Exercise.create({
         name,
       });
-      await exercise.addMuscleGroups([muscleGroup]);
+      await exercise.addMuscleGroups(muscleGroups);
 
       return Exercise.findOne({
         where: { id: exercise.id },
-        include: MuscleGroup,
+        include: { model: MuscleGroup, as: 'muscleGroups' },
       });
     },
   },

@@ -20,7 +20,7 @@ const typeDefs = gql`
 
   input exerciseInput {
     name: String
-    muscleGroup: Int
+    muscleGroups: [Int!]
   }
 
   enum Role {
