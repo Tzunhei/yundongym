@@ -13,10 +13,10 @@ const resolvers = {
       const { name, muscleGroup } = input;
       const exercise = await Exercise.create({
         name,
-        muscleGroup,
       });
+      await exercise.addMuscleGroups({ muscleGroupId: muscleGroup });
 
-      return exercise;
+      return Exercise.findOne({ where: { id: exercise.id } });
     },
   },
 };

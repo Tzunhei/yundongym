@@ -15,10 +15,10 @@ const typeDefs = gql`
     updateExercise(id: Int!, input: exerciseInput!): Exercise!
       @auth
       @hasRole(roles: [ADMIN])
-    deleteExercise(id: Int!): Boolean! @auth @hasRoles(roles: [ADMIN])
+    deleteExercise(id: Int!): Boolean! @auth @hasRole(roles: [ADMIN])
   }
 
-  type exerciseInput {
+  input exerciseInput {
     name: String
     muscleGroup: Int
   }
