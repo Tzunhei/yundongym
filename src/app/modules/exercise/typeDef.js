@@ -12,7 +12,7 @@ const typeDefs = gql`
     createExercise(input: exerciseInput!): Exercise!
       @auth
       @hasRole(roles: [ADMIN])
-    updateExercise(id: Int!, input: exerciseInput!): Exercise!
+    updateExercise(id: ID!, input: exerciseInput!): Exercise!
       @auth
       @hasRole(roles: [ADMIN])
     deleteExercise(id: ID!): Boolean! @auth @hasRole(roles: [ADMIN])

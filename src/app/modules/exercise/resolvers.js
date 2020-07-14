@@ -22,12 +22,26 @@ const resolvers = {
       });
       await exercise.addMuscleGroups(muscleGroups);
 
-      return Exercise.findOne({
+      return await Exercise.findOne({
         where: { id: exercise.id },
         include: { model: MuscleGroup, as: 'muscleGroups' },
       });
     },
-    updateExercise: async (_, { input }, { models }) => {},
+    updateExercise: async (
+      _,
+      { id, input: { name, muscleGroups } },
+      { models: { Exercise, MuscleGroup } },
+    ) => {
+      await Exercise.update({ name, muscleGroups }, { where: { id } });
+
+      const exercise = await Exercise.findOne({ where: { id } });
+      await exercise.setMuscleGroups(muscleGroups);
+
+      return await Exercise.findOne({
+        where: { id },
+        include: { model: MuscleGroup, as: 'muscleGroups' },
+      });
+    },
     deleteExercise: async (_, { id }, { models: { Exercise } }) => {
       const deletedExercise = await Exercise.findOne({ where: { id } });
       await deletedExercise.destroy();
