@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest --watch",
     "dev": "nodemon -r dotenv/config ./src/server.js --exec babel-node",
+    "dev:start": "concurrently --kill-others-on-fail \"yarn test\"  \"yarn dev\"",
     "build": "babel ./src -d dist",
     "serve": "node dist/server.js",
     "lint:fix": "eslint . --ext .js --cache --fix",
@@ -22,6 +23,7 @@
     "apollo-server": "^2.13.0",
     "apollo-server-testing": "^2.16.0",
     "bcrypt": "^4.0.1",
+    "concurrently": "^5.2.0",
     "dotenv": "^8.2.0",
     "global": "^4.4.0",
     "graphql": "^15.0.0",
