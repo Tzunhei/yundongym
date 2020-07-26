@@ -3,6 +3,9 @@ import { createTestClient } from 'apollo-server-testing';
 import { ApolloServer, gql } from 'apollo-server';
 import { schema } from 'app/schema';
 import { sequelize } from 'db/models';
+import dotenv from 'dotenv';
+
+dotenv.config({ path: '.env' });
 
 const { models } = sequelize;
 
@@ -33,7 +36,7 @@ const GET_EXERCISE = gql`
 `;
 
 const CREATE_EXERCISE = gql`
-  mutation createExercise($input: exerciseInput) {
+  mutation createExercise($input: exerciseInput!) {
     createExercise(input: $input) {
       name
       muscleGroups {
@@ -41,6 +44,12 @@ const CREATE_EXERCISE = gql`
         name
       }
     }
+  }
+`;
+
+const DELETE_EXERCISE = gql`
+  mutation deleteExercise($id: ID!) {
+    deleteExercise(id: $id)
   }
 `;
 
@@ -56,6 +65,16 @@ const allExercisesMock = [
     ],
   },
 ];
+
+const newExerciseMock = {
+  name: 'new exercise',
+  muscleGroups: [
+    {
+      id: '1',
+      name: 'chest',
+    },
+  ],
+};
 
 describe('query exercises', () => {
   it('queries all exercises', async () => {
@@ -99,36 +118,36 @@ describe('query exercises', () => {
 
     expect(res.data.getExerciseById).toEqual(allExercisesMock[0]);
   });
+});
 
+describe('mutation exercises', () => {
   it('creates an exercise', async () => {
     const server = new ApolloServer({
       schema,
       context: () => ({
-        headers: 'Bearer 1',
+        headers: {
+          authorization:
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjllM2RjOTg4LTIwZDQtNDQ2Ni1hNjRiLTc1NGY3Nzk0ZTQ2OSIsInJvbGUiOiJBRE1JTiIsImVtYWlsIjoiamlyb2QyMzYwOEBhZ2Vva2ZjLmNvbSIsImlhdCI6MTU5NTY5ODQxNiwiZXhwIjoxNTk2MzAzMjE2fQ.av2oXZh2-xsrqOZlxm5Yc-Bkz3-FNhYHLCDEU79Xk4M',
+        },
         loggedUser: { id: 1, email: 'test@email.com' },
         models,
       }),
     });
 
     models.Exercise.create = jest.fn();
-    models.Exercise.create.mockReturnValueOnce({
-      name: 'new exercise',
-      muscleGroups: [
-        {
-          id: '1',
-          name: 'chest',
-        },
-      ],
-    });
+    models.Exercise.create.mockResolvedValueOnce(newExerciseMock);
+
     const { mutate } = createTestClient(server);
-    const res = await mutate({
+    await mutate({
       mutation: CREATE_EXERCISE,
       variables: {
-        name: 'new exercise',
-        muscleGroups: [1],
+        input: {
+          name: 'new exercise',
+          muscleGroups: [1],
+        },
       },
     });
+
     expect(models.Exercise.create).toHaveBeenCalled();
-    // expect(res.data.createExercise).toEqual()
   });
 });
