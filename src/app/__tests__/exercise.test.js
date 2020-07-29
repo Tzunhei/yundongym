@@ -4,7 +4,6 @@ import { ApolloServer, gql } from 'apollo-server';
 import { schema } from 'app/schema';
 import { sequelize } from 'db/models';
 import dotenv from 'dotenv';
-import exercise from 'db/models/exercise';
 
 dotenv.config({ path: '.env' });
 
@@ -75,12 +74,6 @@ const newExerciseMock = {
       name: 'chest',
     },
   ],
-  addMuscleGroups: (arr) => {
-    newExerciseMock['muscleGroups'] = [
-      ...newExerciseMock['muscleGroups'],
-      ...arr,
-    ];
-  },
 };
 
 const createExerciseResponseMock = {
@@ -143,6 +136,7 @@ describe('mutation exercises', () => {
   it('creates an exercise', async () => {
     models.Exercise.create = jest.fn();
     models.Exercise.create.mockResolvedValueOnce(newExerciseMock);
+    newExerciseMock.addMuscleGroups = jest.fn();
 
     models.Exercise.findOne = jest.fn();
     models.Exercise.findOne.mockResolvedValueOnce(createExerciseResponseMock);
@@ -159,6 +153,24 @@ describe('mutation exercises', () => {
     });
 
     expect(models.Exercise.create).toHaveBeenCalled();
+    expect(newExerciseMock.addMuscleGroups).toHaveBeenCalled();
     expect(res.data.createExercise).toEqual(createExerciseResponseMock);
+  });
+
+  it('deletes an exercise', async () => {
+    models.Exercise.findOne = jest.fn();
+    models.Exercise.findOne.mockResolvedValueOnce(newExerciseMock);
+    newExerciseMock.destroy = jest.fn();
+
+    const { mutate } = createTestClient(server);
+    const res = await mutate({
+      mutation: DELETE_EXERCISE,
+      variables: {
+        id: '1',
+      },
+    });
+
+    expect(newExerciseMock.destroy).toHaveBeenCalled();
+    expect(res.data.deleteExercise).toBeTruthy();
   });
 });
