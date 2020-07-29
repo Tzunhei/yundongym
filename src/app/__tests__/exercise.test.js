@@ -4,6 +4,7 @@ import { ApolloServer, gql } from 'apollo-server';
 import { schema } from 'app/schema';
 import { sequelize } from 'db/models';
 import dotenv from 'dotenv';
+import exercise from 'db/models/exercise';
 
 dotenv.config({ path: '.env' });
 
@@ -74,19 +75,34 @@ const newExerciseMock = {
       name: 'chest',
     },
   ],
+  addMuscleGroups: (arr) => {
+    newExerciseMock['muscleGroups'] = [
+      ...newExerciseMock['muscleGroups'],
+      ...arr,
+    ];
+  },
+};
+
+const createExerciseResponseMock = {
+  name: 'new exercise',
+  muscleGroups: [
+    {
+      id: '1',
+      name: 'chest',
+    },
+  ],
 };
 
 describe('query exercises', () => {
+  const server = new ApolloServer({
+    schema,
+    context: () => ({
+      headers: 'Bearer 1',
+      loggedUser: { id: 1, email: 'test@email.com' },
+      models,
+    }),
+  });
   it('queries all exercises', async () => {
-    const server = new ApolloServer({
-      schema,
-      context: () => ({
-        headers: 'Bearer 1',
-        loggedUser: { id: 1, email: 'test@email.com' },
-        models,
-      }),
-    });
-
     models.Exercise.findAll = jest.fn();
     models.Exercise.findAll.mockReturnValueOnce(allExercisesMock);
     const { query } = createTestClient(server);
@@ -97,14 +113,6 @@ describe('query exercises', () => {
   });
 
   it('get exercise by id', async () => {
-    const server = new ApolloServer({
-      schema,
-      context: () => ({
-        headers: 'Bearer 1',
-        loggedUser: { id: 1, email: 'test@email.com' },
-        models,
-      }),
-    });
     models.Exercise.findOne = jest.fn();
     models.Exercise.findOne.mockReturnValueOnce(allExercisesMock[0]);
 
@@ -115,30 +123,32 @@ describe('query exercises', () => {
     });
 
     expect(models.Exercise.findOne).toHaveBeenCalled();
-
     expect(res.data.getExerciseById).toEqual(allExercisesMock[0]);
   });
 });
 
 describe('mutation exercises', () => {
-  it('creates an exercise', async () => {
-    const server = new ApolloServer({
-      schema,
-      context: () => ({
-        headers: {
-          authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjllM2RjOTg4LTIwZDQtNDQ2Ni1hNjRiLTc1NGY3Nzk0ZTQ2OSIsInJvbGUiOiJBRE1JTiIsImVtYWlsIjoiamlyb2QyMzYwOEBhZ2Vva2ZjLmNvbSIsImlhdCI6MTU5NTY5ODQxNiwiZXhwIjoxNTk2MzAzMjE2fQ.av2oXZh2-xsrqOZlxm5Yc-Bkz3-FNhYHLCDEU79Xk4M',
-        },
-        loggedUser: { id: 1, email: 'test@email.com' },
-        models,
-      }),
-    });
+  const server = new ApolloServer({
+    schema,
+    context: () => ({
+      headers: {
+        authorization:
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjllM2RjOTg4LTIwZDQtNDQ2Ni1hNjRiLTc1NGY3Nzk0ZTQ2OSIsInJvbGUiOiJBRE1JTiIsImVtYWlsIjoiamlyb2QyMzYwOEBhZ2Vva2ZjLmNvbSIsImlhdCI6MTU5NTY5ODQxNiwiZXhwIjoxNTk2MzAzMjE2fQ.av2oXZh2-xsrqOZlxm5Yc-Bkz3-FNhYHLCDEU79Xk4M',
+      },
+      loggedUser: { id: 1, email: 'test@email.com' },
+      models,
+    }),
+  });
 
+  it('creates an exercise', async () => {
     models.Exercise.create = jest.fn();
     models.Exercise.create.mockResolvedValueOnce(newExerciseMock);
 
+    models.Exercise.findOne = jest.fn();
+    models.Exercise.findOne.mockResolvedValueOnce(createExerciseResponseMock);
+
     const { mutate } = createTestClient(server);
-    await mutate({
+    const res = await mutate({
       mutation: CREATE_EXERCISE,
       variables: {
         input: {
@@ -149,5 +159,6 @@ describe('mutation exercises', () => {
     });
 
     expect(models.Exercise.create).toHaveBeenCalled();
+    expect(res.data.createExercise).toEqual(createExerciseResponseMock);
   });
 });
