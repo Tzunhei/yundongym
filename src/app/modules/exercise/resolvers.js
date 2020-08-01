@@ -1,14 +1,17 @@
 const resolvers = {
   Query: {
-    getExercises: async (_, { id }, { models }) => {
+    getExercises: async (_, args, { models }) => {
       const { Exercise, MuscleGroup } = models;
-      if (id)
-        return await Exercise.findOne({
-          where: { id },
-          include: { model: MuscleGroup, as: 'muscleGroups' },
-        });
 
       return await Exercise.findAll({
+        include: { model: MuscleGroup, as: 'muscleGroups' },
+      });
+    },
+    getExerciseById: async (_, { id }, { models }) => {
+      const { Exercise, MuscleGroup } = models;
+
+      return await Exercise.findOne({
+        where: { id },
         include: { model: MuscleGroup, as: 'muscleGroups' },
       });
     },
@@ -32,9 +35,10 @@ const resolvers = {
       { id, input: { name, muscleGroups } },
       { models: { Exercise, MuscleGroup } },
     ) => {
-      await Exercise.update({ name, muscleGroups }, { where: { id } });
-
-      const exercise = await Exercise.findOne({ where: { id } });
+      const exercise = await Exercise.update(
+        { name, muscleGroups },
+        { where: { id }, returning: true },
+      );
       await exercise.setMuscleGroups(muscleGroups);
 
       return await Exercise.findOne({

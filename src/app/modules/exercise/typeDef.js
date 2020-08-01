@@ -5,7 +5,8 @@ const typeDefs = gql`
   directive @hasRole(roles: [Role!]) on FIELD_DEFINITION
 
   type Query {
-    getExercises(id: ID): [Exercise!]!
+    getExercises: [Exercise!]!
+    getExerciseById(id: ID!): Exercise!
   }
 
   type Mutation {

@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[QUERY] Exercise get exercise by id 1`] = `
+Object {
+  "id": "cee739d2-b887-4c5b-8346-ba1c1690bd94",
+  "muscleGroups": Array [
+    Object {
+      "id": "1",
+      "name": "chest",
+    },
+  ],
+  "name": "exercise 1",
+}
+`;
+
+exports[`[QUERY] Exercise queries all exercises 1`] = `
+Array [
+  Object {
+    "id": "cee739d2-b887-4c5b-8346-ba1c1690bd94",
+    "muscleGroups": Array [
+      Object {
+        "id": "1",
+        "name": "chest",
+      },
+    ],
+    "name": "exercise 1",
+  },
+]
+`;
