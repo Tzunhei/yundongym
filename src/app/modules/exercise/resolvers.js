@@ -35,9 +35,10 @@ const resolvers = {
       { id, input: { name, muscleGroups } },
       { models: { Exercise, MuscleGroup } },
     ) => {
-      await Exercise.update({ name, muscleGroups }, { where: { id } });
-
-      const exercise = await Exercise.findOne({ where: { id } });
+      const exercise = await Exercise.update(
+        { name, muscleGroups },
+        { where: { id }, returning: true },
+      );
       await exercise.setMuscleGroups(muscleGroups);
 
       return await Exercise.findOne({
