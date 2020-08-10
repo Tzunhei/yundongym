@@ -1,9 +1,9 @@
-import { v4 as uuidv4 } from 'uuid';
 import { createTestClient } from 'apollo-server-testing';
-import { ApolloServer, gql } from 'apollo-server';
-import { schema } from 'app/schema';
+import { gql } from 'apollo-server';
 import { sequelize } from 'db/models';
 import dotenv from 'dotenv';
+import { constructTestServer } from './__utils';
+import { sign } from 'jsonwebtoken';
 
 dotenv.config({ path: '.env' });
 
@@ -104,8 +104,7 @@ const updatedExerciseMock = {
 };
 
 describe('[QUERY] Exercise', () => {
-  const server = new ApolloServer({
-    schema,
+  const server = constructTestServer({
     context: () => ({
       headers: 'Bearer 1',
       loggedUser: { id: 1, email: 'test@email.com' },
@@ -140,12 +139,17 @@ describe('[QUERY] Exercise', () => {
 });
 
 describe('[MUTATION] Exercise', () => {
-  const server = new ApolloServer({
-    schema,
+  const jwtToken = sign(
+    { id: 1, role: 'ADMIN', email: 'test@email.com' },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: '7d',
+    },
+  );
+  const server = constructTestServer({
     context: () => ({
       headers: {
-        authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjllM2RjOTg4LTIwZDQtNDQ2Ni1hNjRiLTc1NGY3Nzk0ZTQ2OSIsInJvbGUiOiJBRE1JTiIsImVtYWlsIjoiamlyb2QyMzYwOEBhZ2Vva2ZjLmNvbSIsImlhdCI6MTU5NTY5ODQxNiwiZXhwIjoxNTk2MzAzMjE2fQ.av2oXZh2-xsrqOZlxm5Yc-Bkz3-FNhYHLCDEU79Xk4M',
+        authorization: `Bearer ${jwtToken}`,
       },
       loggedUser: { id: 1, email: 'test@email.com' },
       models,
@@ -195,8 +199,6 @@ describe('[MUTATION] Exercise', () => {
         },
       },
     });
-
-    console.log(res.data.updateExercise);
 
     expect(models.Exercise.update).toHaveBeenCalled();
     expect(updatedExerciseMock.setMuscleGroups).toHaveBeenCalled();
