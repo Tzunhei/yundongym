@@ -1,9 +1,8 @@
-import { v4 as uuidv4 } from 'uuid';
 import { createTestClient } from 'apollo-server-testing';
-import { ApolloServer, gql } from 'apollo-server';
-import { schema } from 'app/schema';
+import { gql } from 'apollo-server';
 import { sequelize } from 'db/models';
 import dotenv from 'dotenv';
+import { testServer } from 'app/__tests__/__utils';
 
 dotenv.config({ path: '.env' });
 
@@ -104,14 +103,8 @@ const updatedExerciseMock = {
 };
 
 describe('[QUERY] Exercise', () => {
-  const server = new ApolloServer({
-    schema,
-    context: () => ({
-      headers: 'Bearer 1',
-      loggedUser: { id: 1, email: 'test@email.com' },
-      models,
-    }),
-  });
+  const server = testServer.visitor();
+
   it('queries all exercises', async () => {
     models.Exercise.findAll = jest.fn();
     models.Exercise.findAll.mockReturnValueOnce(allExercisesMock);
@@ -140,17 +133,7 @@ describe('[QUERY] Exercise', () => {
 });
 
 describe('[MUTATION] Exercise', () => {
-  const server = new ApolloServer({
-    schema,
-    context: () => ({
-      headers: {
-        authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjllM2RjOTg4LTIwZDQtNDQ2Ni1hNjRiLTc1NGY3Nzk0ZTQ2OSIsInJvbGUiOiJBRE1JTiIsImVtYWlsIjoiamlyb2QyMzYwOEBhZ2Vva2ZjLmNvbSIsImlhdCI6MTU5NTY5ODQxNiwiZXhwIjoxNTk2MzAzMjE2fQ.av2oXZh2-xsrqOZlxm5Yc-Bkz3-FNhYHLCDEU79Xk4M',
-      },
-      loggedUser: { id: 1, email: 'test@email.com' },
-      models,
-    }),
-  });
+  const server = testServer.admin();
 
   it('creates an exercise', async () => {
     models.Exercise.create = jest.fn();
@@ -195,8 +178,6 @@ describe('[MUTATION] Exercise', () => {
         },
       },
     });
-
-    console.log(res.data.updateExercise);
 
     expect(models.Exercise.update).toHaveBeenCalled();
     expect(updatedExerciseMock.setMuscleGroups).toHaveBeenCalled();
